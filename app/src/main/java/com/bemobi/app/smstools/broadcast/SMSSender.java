@@ -15,16 +15,13 @@ public class SMSSender extends BroadcastReceiver
     public void onReceive(Context context, Intent intent)
     {
 
-        //Receber o LA e o texto
-        /*
-        String la = textPhoneNo.getText().toString();
-        String sms = textSMS.getText().toString();
+        //TODO Receber o LA e o texto
 
         try
         {
 
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(la, null, sms, null, null);
+            smsManager.sendTextMessage("880", null, "ABACAXI", null, null);
             Toast.makeText(context, "SMS enviado!", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e)
@@ -32,6 +29,5 @@ public class SMSSender extends BroadcastReceiver
             Toast.makeText(context, "Falha!", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-*/
     }
 }

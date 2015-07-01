@@ -8,16 +8,20 @@ import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bemobi.app.smstools.R;
 import com.bemobi.app.smstools.async.TestConnectionAsyncTask;
+import com.bemobi.app.smstools.constants.Constants;
 import com.bemobi.app.smstools.utils.AlertUtils;
 import com.bemobi.app.smstools.utils.Connection;
 
 public class HomeActivity extends Activity {
 
     private Context ctx;
+
+    private TextView ip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,10 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
 
         ctx = this;
+
+        ip = (TextView) findViewById(R.id.ip);
+
+        ip.setText(Constants.SERVER_URL);
 
         findViewById(R.id.testButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,9 +53,14 @@ public class HomeActivity extends Activity {
                             dialog.dismiss();
                         }
                     };
-                    new AlertUtils(ctx).getAlertDialog("Por favor, ative o WIFI", null, false, positiveButton, "Ok", null, null).show();
+                    new AlertUtils(ctx).getAlertDialog("Nenhuma conexâo ativa pelo Wifi.", null, false, positiveButton, "Ok", null, null).show();
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

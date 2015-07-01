@@ -8,6 +8,8 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bemobi.app.smstools.async.NotifyServerAcyncTask;
+
 /**
  * Created by rodrigo.bacellar on 10/06/2015.
  */
@@ -23,10 +25,8 @@ public class SMSReceiver extends BroadcastReceiver
 
         try
         {
-
             if (bundle != null)
             {
-
                 final Object[] pdusObj = (Object[]) bundle.get(PDUS);
 
                 for (int i = 0; i < pdusObj.length; i++)
@@ -41,6 +41,7 @@ public class SMSReceiver extends BroadcastReceiver
                     Toast.makeText(context, "senderNum: "+ phoneNumber + ", message: " + message, Toast.LENGTH_LONG).show();
 
                     //Enviar pro Servidor
+                    new NotifyServerAcyncTask().execute();
 
                 }
             }
