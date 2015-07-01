@@ -1,4 +1,4 @@
-package com.bemobi.app.smstools.broadcasst;
+package com.bemobi.app.smstools.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -40,12 +40,14 @@ public class SMSReceiver extends BroadcastReceiver
 
                     Toast.makeText(context, "senderNum: "+ phoneNumber + ", message: " + message, Toast.LENGTH_LONG).show();
 
+                    //Enviar pro Servidor
+
                 }
             }
         }
         catch (Exception e)
         {
-            Log.e("SmsReceiver", "Exception smsReceiver" +e);
+            Log.e("SmsReceiver", "Exception smsReceiver" + e);
         }
     }
 

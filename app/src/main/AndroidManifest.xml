@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".broadcasst.SMSReceiver">
+        <receiver android:name=".broadcast.SMSReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -29,5 +29,42 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
+
+    <!-- O GCM precisa se conectar a uma conta do Google. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!-- Permissão utilizada para travar a tela, e evitar o modo de espera. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Permissão utilizada para vibrar o aparelho. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- O GCM precisa de internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Saber se internet do aparelho esta ativa -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
+    <!-- BroadcastReceiver para receber as mensagens do GCM, por meio de Intents. -->
+    <receiver
+        android:name="com.bemobi.app.smstools.broadcast.GCMBoadcastReceiver"
+        android:permission="com.google.android.c2dm.permission.SEND" >
+        <intent-filter>
+
+            <!-- Filtrar as ações para receber mensagens. -->
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            <!-- Filtrar a ação para receber o registration id do aparelho. -->
+            <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+            <category android:name="br.com.socialfut.gcm" />
+        </intent-filter>
+    </receiver>
+
+    <!--
+		  Service chamado automaticamente pelo receiver acima.
+		  Deve conter o código para ler as mensagens.
+        -->
+    <service android:name="br.com.socialfut.gcm.GCMIntentService" />
 
 </manifest>
