@@ -1,47 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
-    tools:context=".HomeActivity">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewPhoneNo"
+    <LinearLayout
+        android:id="@+id/ipLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Phone Number : "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp">
 
-    <EditText
-        android:layout_below="@id/textViewPhoneNo"
-        android:id="@+id/editTextPhoneNo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:phoneNumber="true" >
-    </EditText>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="IP do servidor:"
+            android:textSize="24dp" />
 
-    <TextView
-        android:layout_below="@id/editTextPhoneNo"
-        android:id="@+id/textViewSMS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter SMS Message : "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <EditText
-        android:layout_below="@id/textViewSMS"
-        android:id="@+id/editTextSMS"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:lines="5"
-        android:gravity="top" />
+        <TextView
+            android:id="@+id/ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp"
+            android:text="10.0.0.135"
+            android:textSize="24dp" />
+    </LinearLayout>
 
     <Button
-        android:layout_below="@id/editTextSMS"
-        android:id="@+id/sendButton"
-        android:layout_width="fill_parent"
+        android:id="@+id/testButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send" />
+        android:layout_below="@id/ipLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="@string/test" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/logo" />
 
 </RelativeLayout>

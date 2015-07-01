@@ -1,6 +1,8 @@
 package com.bemobi.app.smstools.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -9,47 +11,43 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bemobi.app.smstools.R;
+import com.bemobi.app.smstools.async.TestConnectionAsyncTask;
+import com.bemobi.app.smstools.utils.AlertUtils;
+import com.bemobi.app.smstools.utils.Connection;
 
-public class HomeActivity extends Activity
-{
+public class HomeActivity extends Activity {
 
-    Button sendButton;
-    EditText textPhoneNo;
-    EditText textSMS;
+    private Context ctx;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
 
-        sendButton = (Button) findViewById(R.id.sendButton);
-        textPhoneNo = (EditText) findViewById(R.id.editTextPhoneNo);
-        textSMS = (EditText) findViewById(R.id.editTextSMS);
+        ctx = this;
 
-        sendButton.setOnClickListener(new View.OnClickListener()
-        {
+        findViewById(R.id.testButton).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                String phoneNo = textPhoneNo.getText().toString();
-                String sms = textSMS.getText().toString();
+            public void onClick(View v) {
 
-                try
+                if(Connection.wifiEnable(ctx))
                 {
-
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(phoneNo, null, sms, null, null);
-                    Toast.makeText(getApplicationContext(), "SMS enviado!", Toast.LENGTH_SHORT).show();
+                    new TestConnectionAsyncTask(ctx).execute();
                 }
-                catch (Exception e)
+                else
                 {
-                    Toast.makeText(getApplicationContext(), "Falha!", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                    DialogInterface.OnClickListener positiveButton = new DialogInterface.OnClickListener()
+                    {
+                        public void onClick (DialogInterface dialog, int id)
+                        {
+                            dialog.dismiss();
+                        }
+                    };
+                    new AlertUtils(ctx).getAlertDialog("Por favor, ative o WIFI", null, false, positiveButton, "Ok", null, null).show();
                 }
             }
         });
-
     }
 }
