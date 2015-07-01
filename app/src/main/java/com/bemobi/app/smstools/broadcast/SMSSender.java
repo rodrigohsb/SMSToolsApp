@@ -16,7 +16,7 @@ public class SMSSender extends BroadcastReceiver
     {
 
         //Receber o LA e o texto
-
+        /*
         String la = textPhoneNo.getText().toString();
         String sms = textSMS.getText().toString();
 
@@ -32,6 +32,6 @@ public class SMSSender extends BroadcastReceiver
             Toast.makeText(context, "Falha!", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
+*/
     }
 }
