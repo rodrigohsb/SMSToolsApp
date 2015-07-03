@@ -21,6 +21,6 @@ public class Constants
 
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
 
-    public static String SENDER_ID;
+    public static final String PDUS = "pdus";
 
 }

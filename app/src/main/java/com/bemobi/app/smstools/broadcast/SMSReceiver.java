@@ -4,12 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.bemobi.app.smstools.async.NotifyServerAcyncTask;
 import com.bemobi.app.smstools.bean.SMS;
+import com.bemobi.app.smstools.constants.Constants;
 
 import java.util.Date;
 
@@ -19,10 +21,8 @@ import java.util.Date;
 public class SMSReceiver extends BroadcastReceiver
 {
 
-    public static final String PDUS = "pdus";
-
     @Override
-    public void onReceive(Context context, Intent intent)
+    public void onReceive(final Context context, Intent intent)
     {
         final Bundle bundle = intent.getExtras();
 
@@ -30,24 +30,30 @@ public class SMSReceiver extends BroadcastReceiver
         {
             if (bundle != null)
             {
-                final Object[] pdusObj = (Object[]) bundle.get(PDUS);
+                final Object[] pdusObj = (Object[]) bundle.get(Constants.PDUS);
 
                 for (int i = 0; i < pdusObj.length; i++)
                 {
 
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
 
-                    String phoneNumber = currentMessage.getDisplayOriginatingAddress();
+                    String from = currentMessage.getDisplayOriginatingAddress();
 
-                    String message = currentMessage.getDisplayMessageBody();
+                    final String message = currentMessage.getDisplayMessageBody();
 
-                    Toast.makeText(context, "senderNum: "+ phoneNumber + ", message: " + message, Toast.LENGTH_LONG).show();
+                    new Handler().post(new Runnable()
+                    {
+                        @Override
+                        public void run ()
+                        {
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                    SMS sms = new SMS("",message,new Date());
+                    Toast.makeText(context, "senderNum [" + from + "], message [" + message + "]", Toast.LENGTH_LONG).show();
 
-                    //Enviar pro Servidor
+                    SMS sms = new SMS(from, message, new Date());
                     new NotifyServerAcyncTask(sms).execute();
-
                 }
             }
         }
