@@ -7,27 +7,33 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.bemobi.app.smstools.R;
+import com.bemobi.app.smstools.service.RegistrationIntentService;
 
 /**
  * Created by rodrigo.bacellar on 01/07/2015.
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends Activity
+{
 
     private Context ctx;
-    private static int SPLASH_TIME_OUT = 2000;
+    private static int SPLASH_TIME_OUT = 1000;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         ctx = this;
 
-        //TODO Checar o GCM
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 startActivity(new Intent(ctx, HomeActivity.class));
                 finish();
             }

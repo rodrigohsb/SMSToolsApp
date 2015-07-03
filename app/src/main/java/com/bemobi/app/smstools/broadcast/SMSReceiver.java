@@ -9,6 +9,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bemobi.app.smstools.async.NotifyServerAcyncTask;
+import com.bemobi.app.smstools.bean.SMS;
+
+import java.util.Date;
 
 /**
  * Created by rodrigo.bacellar on 10/06/2015.
@@ -40,8 +43,10 @@ public class SMSReceiver extends BroadcastReceiver
 
                     Toast.makeText(context, "senderNum: "+ phoneNumber + ", message: " + message, Toast.LENGTH_LONG).show();
 
+                    SMS sms = new SMS("",message,new Date());
+
                     //Enviar pro Servidor
-                    new NotifyServerAcyncTask().execute();
+                    new NotifyServerAcyncTask(sms).execute();
 
                 }
             }
