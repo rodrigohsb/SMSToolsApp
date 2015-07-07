@@ -1,23 +1,42 @@
 package com.bemobi.app.smstools.bean;
 
-import java.io.Serializable;
+import android.provider.BaseColumns;
+
 import java.util.Date;
 
 /**
  * Created by rodrigo.bacellar on 02/07/2015.
  */
-public class SMS implements Serializable {
+public class SMS {
+
+    public static String[] columns = new String[]{SmsDB._ID, SmsDB.LA, SmsDB.TEXT, SmsDB.SENT_DATE, SmsDB.RECEIVED_DATE};
+
+    private long id;
 
     private String la;
 
     private String text;
 
-    private Date date;
+    private Date sendDate;
 
-    public SMS(String la, String text, Date date) {
+    private Date receivedDate;
+
+    public SMS(){
+    }
+
+    public SMS(String la, String text, Date sendDate, Date receivedDate) {
         this.la = la;
         this.text = text;
-        this.date = date;
+        this.sendDate = sendDate;
+        this.receivedDate = receivedDate;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getLa() {
@@ -36,12 +55,20 @@ public class SMS implements Serializable {
         this.text = text;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getSendDate() {
+        return sendDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
     }
 
     @Override
@@ -49,7 +76,21 @@ public class SMS implements Serializable {
         return "SMS{" +
                 "la='" + la + '\'' +
                 ", text='" + text + '\'' +
-                ", date=" + date +
+                ", sendDate=" + sendDate +
+                ", receivedDate=" + receivedDate +
                 '}';
+    }
+
+    public static final class SmsDB implements BaseColumns
+    {
+        public static final String DEFAULT_SORT_ORDER = "id ACS";
+
+        public static final String LA = "LA";
+
+        public static final String TEXT = "TEXT";
+
+        public static final String SENT_DATE = "SENT_DATE";
+
+        public static final String RECEIVED_DATE = "RECEIVED_DATE";
     }
 }

@@ -51,8 +51,6 @@
 
         <activity android:name=".activity.HomeActivity" android:screenOrientation="portrait"/>
 
-        <activity android:name=".activity.SettingsActivity" android:parentActivityName=".activity.HomeActivity" android:screenOrientation="portrait"/>
-
         <!-- CLasse para receber o SMS-->
         <receiver android:name=".broadcast.SMSReceiver">
             <intent-filter>

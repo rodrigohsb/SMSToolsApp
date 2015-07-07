@@ -9,21 +9,29 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bemobi.app.smstools.async.NotifyServerAcyncTask;
 import com.bemobi.app.smstools.bean.SMS;
 import com.bemobi.app.smstools.constants.Constants;
+import com.bemobi.app.smstools.persistence.Repository;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 
 /**
+ *
+ * Broadcast que inicia ao receber um sms.
+ *
  * Created by rodrigo.bacellar on 10/06/2015.
  */
 public class SMSReceiver extends BroadcastReceiver
 {
+    private Context ctx;
 
     @Override
     public void onReceive(final Context context, Intent intent)
     {
+        ctx = context;
+
         final Bundle bundle = intent.getExtras();
 
         try
@@ -39,21 +47,10 @@ public class SMSReceiver extends BroadcastReceiver
 
                     String from = currentMessage.getDisplayOriginatingAddress();
 
-                    final String message = currentMessage.getDisplayMessageBody();
+                    String message = currentMessage.getDisplayMessageBody();
 
-                    new Handler().post(new Runnable()
-                    {
-                        @Override
-                        public void run ()
-                        {
-                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    Toast.makeText(context, "senderNum [" + from + "], message [" + message + "]", Toast.LENGTH_LONG).show();
-
-                    SMS sms = new SMS(from, message, new Date());
-                    new NotifyServerAcyncTask(sms).execute();
+                    SMS sms = new SMS(from,message,null,new Date());
+                    notifyServer(sms);
                 }
             }
         }
@@ -63,4 +60,34 @@ public class SMSReceiver extends BroadcastReceiver
         }
     }
 
+    private void notifyServer(SMS sms)
+    {
+        try
+        {
+
+            URL url = new URL(Constants.SERVER_BASE_URL + Constants.SERVER_RECEIVED_PATH);
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoInput(true);
+            connection.connect();
+
+            int responseCode = connection.getResponseCode();
+
+            if(responseCode == HttpURLConnection.HTTP_OK)
+            {
+                System.out.println("Registration success");
+            }
+            else
+            {
+                System.out.println("ResponseCode [ " + responseCode + "]. Registration failed for: " + (Constants.SERVER_BASE_URL + Constants.SERVER_RECEIVED_PATH));
+                Repository repository = new Repository(ctx);
+                repository.save(sms);
+                //TODO Gravar em banco para retentar!
+            }
+        }
+        catch (final Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 }
