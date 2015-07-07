@@ -34,7 +34,7 @@ public class HomeActivity extends Activity
             @Override
             public void onClick(View v)
             {
-                if (Connection.wifiEnable(ctx) && Connection.isCooopWifi(ctx))
+                if (Connection.isConnected(ctx))
                 {
                     new TestConnectionAsyncTask(ctx).execute();
                 }
@@ -52,27 +52,6 @@ public class HomeActivity extends Activity
                 }
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.home, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected (MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case R.id.action_settings:
-                startActivity(new Intent(ctx, SettingsActivity.class));
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
