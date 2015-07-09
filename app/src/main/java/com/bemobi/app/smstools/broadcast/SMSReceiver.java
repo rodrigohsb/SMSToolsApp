@@ -4,14 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.bemobi.app.smstools.bean.SMS;
 import com.bemobi.app.smstools.constants.Constants;
-import com.bemobi.app.smstools.persistence.Repository;
+import com.bemobi.app.smstools.service.NotifyServerService;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,13 +23,9 @@ import java.util.Date;
  */
 public class SMSReceiver extends BroadcastReceiver
 {
-    private Context ctx;
-
     @Override
     public void onReceive(final Context context, Intent intent)
     {
-        ctx = context;
-
         final Bundle bundle = intent.getExtras();
 
         try
@@ -45,49 +39,21 @@ public class SMSReceiver extends BroadcastReceiver
 
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
 
-                    String from = currentMessage.getDisplayOriginatingAddress();
+                    String from = currentMessage.getDisplayOriginatingAddress().replace("+","");
 
                     String message = currentMessage.getDisplayMessageBody();
 
                     SMS sms = new SMS(from,message,null,new Date());
-                    notifyServer(sms);
+
+                    Intent it = new Intent(context, NotifyServerService.class);
+                    it.putExtra("sms", sms);
+                    context.startService(it);
                 }
             }
         }
         catch (Exception e)
         {
             Log.e("SmsReceiver", "Exception smsReceiver" + e);
-        }
-    }
-
-    private void notifyServer(SMS sms)
-    {
-        try
-        {
-
-            URL url = new URL(Constants.SERVER_BASE_URL + Constants.SERVER_RECEIVED_PATH);
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setDoInput(true);
-            connection.connect();
-
-            int responseCode = connection.getResponseCode();
-
-            if(responseCode == HttpURLConnection.HTTP_OK)
-            {
-                System.out.println("Registration success");
-            }
-            else
-            {
-                System.out.println("ResponseCode [ " + responseCode + "]. Registration failed for: " + (Constants.SERVER_BASE_URL + Constants.SERVER_RECEIVED_PATH));
-                Repository repository = new Repository(ctx);
-                repository.save(sms);
-                //TODO Gravar em banco para retentar!
-            }
-        }
-        catch (final Exception ex)
-        {
-            ex.printStackTrace();
         }
     }
 }

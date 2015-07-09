@@ -2,12 +2,14 @@ package com.bemobi.app.smstools.bean;
 
 import android.provider.BaseColumns;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by rodrigo.bacellar on 02/07/2015.
  */
-public class SMS {
+public class SMS implements Serializable
+{
 
     public static String[] columns = new String[]{SmsDB._ID, SmsDB.LA, SmsDB.TEXT, SmsDB.SENT_DATE, SmsDB.RECEIVED_DATE};
 

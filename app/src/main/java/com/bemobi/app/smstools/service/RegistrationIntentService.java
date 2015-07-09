@@ -35,7 +35,7 @@ public class RegistrationIntentService extends IntentService
         try
         {
             InstanceID instanceID = InstanceID.getInstance(this);
-            String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+            String token = instanceID.getToken(Constants.SENDER_ID, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
 
             if(token != null)
             {
@@ -46,7 +46,11 @@ public class RegistrationIntentService extends IntentService
                 connection.setRequestMethod("POST");
                 connection.setDoInput(true);
                 connection.connect();
-                sharedPreferences.edit().putBoolean(Constants.SENT_TOKEN_TO_SERVER, true).apply();
+
+                if(connection.getResponseCode() == 200)
+                {
+                    sharedPreferences.edit().putBoolean(Constants.SENT_TOKEN_TO_SERVER, true).apply();
+                }
             }
         }
         catch (IOException e)
