@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.bemobi.app.smstools.bean.SMS;
 import com.bemobi.app.smstools.constants.Constants;
-import com.bemobi.app.smstools.persistence.Repository;
 
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
@@ -70,8 +69,7 @@ public class NotifyServerService extends IntentService
             }
             else
             {
-                /*Salva em banco se nao conseguiu enviar pro server*/
-                save(sms);
+                //TODO Salva em banco e retentar?
             }
         }
         catch (final Exception ex)
@@ -97,8 +95,7 @@ public class NotifyServerService extends IntentService
             }
             else
             {
-                /*Salva em banco se nao conseguiu enviar pro server*/
-                save(sms);
+                //TODO Salva em banco e retentar?
             }
         }
         catch (final Exception ex)
@@ -156,18 +153,5 @@ public class NotifyServerService extends IntentService
             ex.printStackTrace();
         }
         return 500;
-    }
-
-    /**
-     *
-     * Salva sms no banco.
-     *
-     * @param sms
-     */
-    private void save(SMS sms)
-    {
-        Repository repository = new Repository(this);
-        repository.save(sms);
-        //TODO retentar
     }
 }
